@@ -2,4 +2,4 @@
 *.csv
 *.xlsx
 *.ipynb
-.idea/workspace.xml
+.idea/*
