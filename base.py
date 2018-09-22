@@ -7,80 +7,82 @@ from sklearn.metrics import roc_auc_score
 from matplotlib import pyplot as plt
 import len, range
 
-def univariate_plotter(feature, input_data, target_col, bins=10):
-    data = input_data.copy()
+def get_grouped_data(input_data, feature, target_col, bins, cuts=0, has_null=0, is_train=False):
+    if has_null == 1:
+        data_null = input_data[pd.isnull(input_data[feature])]
+        input_data = input_data[~pd.isnull(input_data[feature])]
+        input_data.reset_index(inplace=True, drop=True)
 
-    nan_flag = 0
-    if pd.isnull(data[feature]).sum() > 0:
-        nan_flag = 1
-        print("NANs present")
-    # cuts=[0]
-    cuts = []
-    prev_cut = -1000000000
-    if nan_flag != 1:
-        for i in range(bins + 1):
-            next_cut = np.percentile(data[feature], i * 100 / bins)
+    if is_train:
+        prev_cut = min(input_data[feature]) - 1
+        cuts = [prev_cut]
+        for i in range(1, bins + 1):
+            next_cut = np.percentile(input_data[feature], i * 100.0 / bins)
             if next_cut != prev_cut:
                 cuts.append(next_cut)
+            else:
+                print('Reduced the number of bins due to less variation in feature')
             prev_cut = next_cut
-        # print(cuts)
-        cuts[0] = cuts[0] - 1
-        cuts[len(cuts) - 1] = cuts[len(cuts) - 1] + 1
-        # cuts=[ -1, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.05, 2]
-        cut_series = pd.cut(data[feature], cuts)
+
+        cut_series = pd.cut(input_data[feature], cuts)
     else:
-        data_feat_nonan = data[feature].copy()
-        data_feat_nonan[np.isinf(data_feat_nonan)] = np.nan
-        data_feat_nonan = data_feat_nonan[~np.isnan(data_feat_nonan)]
-        data[feature][np.isinf(data[feature])] = np.nan
-        data_nonan = data[~np.isnan(data[feature])]
+        cut_series = pd.cut(input_data[feature], cuts)
 
-        for i in range(bins + 1):
-            next_cut = np.percentile(data_feat_nonan, i * 100 / bins)
-            if next_cut != prev_cut:
-                cuts.append(next_cut)
-            prev_cut = next_cut.copy()
+    grouped = input_data.groupby([cut_series], as_index=True).agg(
+        {target_col: [np.size, np.mean], feature: [np.mean]})
+    grouped.columns = ['_'.join(cols).strip() for cols in grouped.columns.values]
+    grouped[grouped.index.name] = grouped.index
+    grouped.reset_index(inplace=True, drop=True)
+    grouped = grouped[[feature] + list(grouped.columns[0:3])]
+    grouped = grouped.rename(index=str, columns={target_col + '_size': 'Samples_in_bin'})
+    grouped = grouped.reset_index(drop=True)
+    corrected_bin_name = '[' + str(min(input_data[feature])) + ', ' + str(grouped.loc[0, feature]).split(',')[1]
+    grouped[feature] = grouped[feature].astype('category')
+    grouped[feature] = grouped[feature].cat.add_categories(corrected_bin_name)
+    grouped.loc[0, feature] = corrected_bin_name
 
-        cuts[0] = cuts[0] - 0.00001
-        cuts[len(cuts) - 1] = cuts[len(cuts) - 1] + 0.00001
-        # cuts=[ -1, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.05]
-        cut_series = pd.cut(data_nonan[feature], cuts)
-    if nan_flag != 1:
+    if has_null == 1:
+        grouped_null = grouped.loc[0:0, :].copy()
+        grouped_null[feature] = grouped_null[feature].astype('category')
+        grouped_null[feature] = grouped_null[feature].cat.add_categories('Nulls')
+        grouped_null.loc[0, feature] = 'Nulls'
+        grouped_null.loc[0, 'Samples_in_bin'] = len(data_null)
+        grouped_null.loc[0, target_col + '_mean'] = data_null[target_col].mean()
+        grouped_null.loc[0, feature + '_mean'] = np.nan
+        grouped = pd.concat([grouped_null, grouped], axis=0)
+        grouped.reset_index(inplace=True, drop=True)
 
-        grouped = data.groupby([cut_series], as_index=True).agg({target_col: [np.size, np.mean], feature: [np.mean]})
-        grouped1 = pd.DataFrame(grouped.index)
-        grouped = data.groupby([cut_series], as_index=False).agg({target_col: [np.size, np.mean], feature: [np.mean]})
-        grouped.columns = ['_'.join(cols).strip() for cols in grouped.columns.values]
+    return (cuts, grouped)
 
-        grouped = pd.DataFrame(grouped.to_records())
-        grouped1[target_col+'_mean'] = grouped[target_col+'_mean']
-        grouped1[target_col+'_sum'] = grouped[target_col+'_size']
-        grouped1[feature + '_mean'] = grouped[feature + '_mean']
 
-    else:
-        grouped = data_nonan.groupby([cut_series], as_index=True).agg({target_col: [np.size, np.mean]})
-        grouped1 = pd.DataFrame(grouped.index)
-        grouped = data_nonan.groupby([cut_series], as_index=False).agg({target_col: [np.size, np.mean]})
-        grouped.columns = ['_'.join(cols).strip() for cols in grouped.columns.values]
-        grouped = pd.DataFrame(grouped.to_records())
-        grouped1[target_col+'_mean'] = grouped[target_col+'_mean']
-        grouped1[target_col+'_sum'] = grouped[target_col+'_sum']
-        grouped1_nan = grouped1[0:1]
-        grouped1_nan[feature] = (grouped1_nan[feature]).astype('str')
-        grouped1_nan[feature][0] = 'Nan'
-        grouped1_nan[target_col+'_mean'][0] = y_train[np.isnan(data[feature])].mean()
-        grouped1_nan[target_col+'_sum'][0] = y_train[np.isnan(data[feature])].sum()
-        grouped1 = pd.concat([grouped1, grouped1_nan])
-
-    grouped1 = grouped1.reset_index(drop=True)
-    a = plt.plot(grouped1[target_col+'_mean'], marker='o')
-    plt.xticks(np.arange(len(grouped1)), (grouped1[feature]).astype('str'), rotation=45)
+def draw_plots(input_data, feature, target_col):
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 2, 1)
+    plt.plot(input_data[target_col + '_mean'], marker='o')
+    plt.xticks(np.arange(len(input_data)), (input_data[feature]).astype('str'), rotation=45)
     plt.xlabel('Bins of ' + feature)
-    plt.ylabel('% Incomplete Orders')
-    plt.show()
-    b = plt.bar(np.arange(len(grouped1)), grouped1[target_col+'_sum'], alpha=0.5)
-    plt.xticks(np.arange(len(grouped1)), (grouped1[feature]).astype('str'), rotation=45)
+    plt.ylabel('Average of ' + feature)
+    plt.subplot(1, 2, 2)
+    plt.bar(np.arange(len(input_data)), input_data['Samples_in_bin'], alpha=0.5)
+    plt.xticks(np.arange(len(input_data)), (input_data[feature]).astype('str'), rotation=45)
     plt.xlabel('Bins of ' + feature)
     plt.ylabel('Bin-wise Population')
+    plt.tight_layout()
     plt.show()
-    return(grouped1)
+
+
+def univariate_plotter(feature, data, target_col, bins=10, data_test=0):
+    has_null = pd.isnull(data[feature]).sum() > 0
+
+    cuts, grouped = get_grouped_data(input_data=data, feature=feature, target_col=target_col, bins=bins,
+                                     has_null=has_null, is_train=True)
+    if type(data_test) == pd.core.frame.DataFrame:
+        has_null_test = pd.isnull(data_test[feature]).sum() > 0
+        cuts, grouped_test = get_grouped_data(input_data=data_test.reset_index(drop=True), feature=feature,
+                                              target_col=target_col, bins=bins, has_null=has_null_test, cuts=cuts)
+        draw_plots(input_data=grouped, feature=feature, target_col=target_col)
+        draw_plots(input_data=grouped_test, feature=feature, target_col=target_col)
+    else:
+        draw_plots(input_data=grouped, feature=feature, target_col=target_col)
+
+    return (grouped)
