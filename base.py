@@ -22,7 +22,7 @@ def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
         cuts = [prev_cut]
         reduced_cuts = 0
         for i in range(1, bins + 1):
-            next_cut = np.percentile(input_data[feature], i * 100.0 / bins)
+            next_cut = np.percentile(input_data[feature], i * 100 / bins)
             if next_cut != prev_cut:
                 cuts.append(next_cut)
             else:
@@ -158,19 +158,51 @@ def get_trend_correlation(grouped, grouped_test, feature, target_col):
 
 
 def univariate_plotter(feature, data, target_col, bins=10, data_test=0):
-    print('Plots for ' + feature)
+    print(' {:^100} '.format('Plots for ' + feature))
     cuts, grouped = get_grouped_data(input_data=data, feature=feature, target_col=target_col, bins=bins)
-
-    if type(data_test) == pd.core.frame.DataFrame:
+    has_test = type(data_test) == pd.core.frame.DataFrame
+    if has_test:
         grouped_test = get_grouped_data(input_data=data_test.reset_index(drop=True), feature=feature,
                                         target_col=target_col, bins=bins, cuts=cuts)
         trend_corr = get_trend_correlation(grouped, grouped_test, feature, target_col)
-        print('Train data plots')
+        print(' {:^100} '.format('Train data plots'))
+
         draw_plots(input_data=grouped, feature=feature, target_col=target_col)
-        print('Test data plots')
+        print(' {:^100} '.format('Test data plots'))
+
         draw_plots(input_data=grouped_test, feature=feature, target_col=target_col, trend_correlation=trend_corr)
     else:
         draw_plots(input_data=grouped, feature=feature, target_col=target_col)
-    print('--------------------------------------------------------------------------')
+    print(
+        '--------------------------------------------------------------------------------------------------------------')
     print('\n')
-    return (grouped, grouped_test)
+    if has_test:
+        return (grouped, grouped_test)
+    else:
+        return (grouped)
+
+
+def get_trend_stats_feature(data, target_col, features_list=None, bins=10, data_test=0):
+    if features_list == None:
+        features_list = list(data.columns)
+        features_list.remove(target_col)
+
+    stats_all = []
+    has_test = type(data_test) == pd.core.frame.DataFrame
+    for feature in features_list:
+        cuts, grouped = get_grouped_data(input_data=data, feature=feature, target_col=target_col, bins=bins)
+        trend_changes = get_trend_changes(grouped_data=grouped, feature=feature, target_col=target_col)
+        if has_test:
+            grouped_test = get_grouped_data(input_data=data_test.reset_index(drop=True), feature=feature,
+                                            target_col=target_col, bins=bins, cuts=cuts)
+            trend_corr = get_trend_correlation(grouped, grouped_test, feature, target_col)
+            trend_changes_test = get_trend_changes(grouped_data=grouped_test, feature=feature, target_col=target_col)
+            stats = [feature, trend_changes, trend_changes_test, trend_corr]
+        else:
+            stats = [feature, trend_changes]
+        stats_all.append(stats)
+    stats_all_df = pd.DataFrame(stats_all)
+    stats_all_df.columns = ['Feature', 'Trend_changes'] if has_test == False else ['Feature', 'Trend_changes',
+                                                                                   'Trend_changes_test',
+                                                                                   'Trend_correlation']
+    return (stats_all_df)
