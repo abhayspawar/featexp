@@ -5,8 +5,6 @@ import random
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score
 from matplotlib import pyplot as plt
-import len, range
-
 
 def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
     has_null = pd.isnull(input_data[feature]).sum() > 0
@@ -29,8 +27,8 @@ def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
                 reduced_cuts = reduced_cuts + 1
             prev_cut = next_cut
 
-        if reduced_cuts > 0:
-            print('Reduced the number of bins due to less variation in feature')
+        # if reduced_cuts>0:
+        #     print('Reduced the number of bins due to less variation in feature')
         cut_series = pd.cut(input_data[feature], cuts)
     else:
         cut_series = pd.cut(input_data[feature], cuts)
@@ -148,12 +146,15 @@ def get_trend_correlation(grouped, grouped_test, feature, target_col):
         grouped_test.loc[0, feature] = grouped.loc[0, feature]
     grouped_test_train = grouped.merge(grouped_test[[feature, target_col + '_mean']], on=feature, how='left',
                                        suffixes=('', '_test'))
+    nan_rows = pd.isnull(grouped_test_train[target_col + '_mean']) | pd.isnull(
+        grouped_test_train[target_col + '_mean_test'])
+    grouped_test_train = grouped_test_train.loc[~nan_rows, :]
     trend_correlation = np.corrcoef(grouped_test_train[target_col + '_mean'],
                                     grouped_test_train[target_col + '_mean_test'])[0, 1]
 
     if np.isnan(trend_correlation):
         trend_correlation = 0
-        print("Only one bin created and hence, correlation can't be calculated")
+        print("Only one bin created for " + feature + ". Correlation can't be calculated")
     return (trend_correlation)
 
 
