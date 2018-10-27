@@ -206,7 +206,7 @@ def univariate_plotter(feature, data, target_col, bins=10, data_test=0):
             return (grouped)
 
 
-def get_univariate_plots(data, target_col, features_list=None, bins=10, data_test=0):
+def get_univariate_plots(data, target_col, features_list=0, bins=10, data_test=0):
     """
     Creates univariate dependence plots for features in the dataset
     :param data: dataframe containing features and target columns
@@ -216,12 +216,15 @@ def get_univariate_plots(data, target_col, features_list=None, bins=10, data_tes
     :param data_test: test data which has to be compared with input data for correlation
     :return:
     """
-    if features_list == None:
-        for cols in data.columns:
-            if cols != target_col and data[cols].dtype == 'O':
-                print(cols + ' is categorical. Categorical features not supported yet.')
-            elif cols != target_col and data[cols].dtype != 'O':
-                univariate_plotter(feature=cols, data=data, target_col=target_col, bins=10, data_test=data_test)
+    if type(features_list) == int:
+        features_list = list(data.columns)
+        features_list.remove(target_col)
+
+    for cols in features_list:
+        if cols != target_col and data[cols].dtype == 'O':
+            print(cols + ' is categorical. Categorical features not supported yet.')
+        elif cols != target_col and data[cols].dtype != 'O':
+            univariate_plotter(feature=cols, data=data, target_col=target_col, bins=10, data_test=data_test)
 
 
 def get_trend_stats_feature(data, target_col, features_list=0, bins=10, data_test=0):
