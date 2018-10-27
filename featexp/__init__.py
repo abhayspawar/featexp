@@ -4,3 +4,4 @@ from featexp.base import univariate_plotter
 from featexp.base import draw_plots
 from featexp.base import get_trend_stats_feature
 from featexp.base import get_trend_changes
+from featexp.base import get_univariate_plots

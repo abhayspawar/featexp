@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="featexp",
-    version="0.0.14",
+    version="0.0.17",
     author="Abhay Pawar",
     author_email="abhayspawar@gmail.com",
     description="Feature exploration for supervised learning",

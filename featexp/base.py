@@ -218,13 +218,13 @@ def get_univariate_plots(data, target_col, features_list=None, bins=10, data_tes
     """
     if features_list == None:
         for cols in data.columns:
-            if cols != target_col and data[feature].dtype == 'O':
-                print(feature + ' is categorical. Categorical features not supported yet.')
-            elif cols != target_col and data[feature].dtype != 'O':
+            if cols != target_col and data[cols].dtype == 'O':
+                print(cols + ' is categorical. Categorical features not supported yet.')
+            elif cols != target_col and data[cols].dtype != 'O':
                 univariate_plotter(feature=cols, data=data, target_col=target_col, bins=10, data_test=data_test)
 
 
-def get_trend_stats_feature(data, target_col, features_list=None, bins=10, data_test=0):
+def get_trend_stats_feature(data, target_col, features_list=0, bins=10, data_test=0):
     """
     Calculates trend changes and correlation between train/test for list of features
     :param data: dataframe containing features and target columns
@@ -234,26 +234,32 @@ def get_trend_stats_feature(data, target_col, features_list=None, bins=10, data_
     :param data_test: test data which has to be compared with input data for correlation
     :return:
     """
-    if features_list == None:
+    if type(features_list) == int:
         features_list = list(data.columns)
         features_list.remove(target_col)
 
     stats_all = []
     has_test = type(data_test) == pd.core.frame.DataFrame
+    ignored = []
     for feature in features_list:
-        cuts, grouped = get_grouped_data(input_data=data, feature=feature, target_col=target_col, bins=bins)
-        trend_changes = get_trend_changes(grouped_data=grouped, feature=feature, target_col=target_col)
-        if has_test:
-            grouped_test = get_grouped_data(input_data=data_test.reset_index(drop=True), feature=feature,
-                                            target_col=target_col, bins=bins, cuts=cuts)
-            trend_corr = get_trend_correlation(grouped, grouped_test, feature, target_col)
-            trend_changes_test = get_trend_changes(grouped_data=grouped_test, feature=feature, target_col=target_col)
-            stats = [feature, trend_changes, trend_changes_test, trend_corr]
+        if data[feature].dtype == 'O' or feature == target_col:
+            ignored.append(feature)
         else:
-            stats = [feature, trend_changes]
-        stats_all.append(stats)
+            cuts, grouped = get_grouped_data(input_data=data, feature=feature, target_col=target_col, bins=bins)
+            trend_changes = get_trend_changes(grouped_data=grouped, feature=feature, target_col=target_col)
+            if has_test:
+                grouped_test = get_grouped_data(input_data=data_test.reset_index(drop=True), feature=feature,
+                                                target_col=target_col, bins=bins, cuts=cuts)
+                trend_corr = get_trend_correlation(grouped, grouped_test, feature, target_col)
+                trend_changes_test = get_trend_changes(grouped_data=grouped_test, feature=feature,
+                                                       target_col=target_col)
+                stats = [feature, trend_changes, trend_changes_test, trend_corr]
+            else:
+                stats = [feature, trend_changes]
+            stats_all.append(stats)
     stats_all_df = pd.DataFrame(stats_all)
     stats_all_df.columns = ['Feature', 'Trend_changes'] if has_test == False else ['Feature', 'Trend_changes',
                                                                                    'Trend_changes_test',
                                                                                    'Trend_correlation']
+    print('Categorical features ' + str(ignored) + ' ignored. Categorical features not supported yet.')
     return (stats_all_df)
