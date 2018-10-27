@@ -3,3 +3,19 @@
 *.xlsx
 *.ipynb
 .idea/*
+
+*.pyc
+
+# pip installer build files
+/dist/
+/build/
+/*.egg-info
+
+/.eggs
+.ipython
+
+# IDE files
+.idea
+.vscode
+# Jupyter
+notebooks/.ipynb_checkpoints/*
