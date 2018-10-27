@@ -65,30 +65,6 @@ def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
         return (grouped)
 
 
-def draw_plots_old(input_data, feature, target_col, trend_correlation=None):
-    trend_changes = get_trend_changes(grouped_data=input_data, feature=feature, target_col=target_col)
-    plt.figure(figsize=(12, 5))
-    plt.subplot(1, 2, 1)
-    plt.plot(input_data[target_col + '_mean'], marker='o')
-    plt.xticks(np.arange(len(input_data)), (input_data[feature]).astype('str'), rotation=45)
-    plt.xlabel('Bins of ' + feature)
-    plt.ylabel('Average of ' + target_col)
-    comment = "Trend changed " + str(trend_changes) + " times"
-    if trend_correlation != None:
-        comment = comment + '\n' + 'Correlation with train trend: ' + str(int(trend_correlation * 100))
-    props = dict(boxstyle='round', facecolor='wheat', alpha=0.6)
-    plt.text(0.2, 0.48, comment, fontsize=14, verticalalignment='top', bbox=props)
-    plt.title('Average of ' + target_col + ' wrt ' + feature)
-    plt.subplot(1, 2, 2)
-    plt.bar(np.arange(len(input_data)), input_data['Samples_in_bin'], alpha=0.5)
-    plt.xticks(np.arange(len(input_data)), (input_data[feature]).astype('str'), rotation=45)
-    plt.xlabel('Bins of ' + feature)
-    plt.ylabel('Bin-wise sample size')
-    plt.title('Samples in bins of ' + feature)
-    plt.tight_layout()
-    plt.show()
-
-
 def draw_plots(input_data, feature, target_col, trend_correlation=None):
     trend_changes = get_trend_changes(grouped_data=input_data, feature=feature, target_col=target_col)
     plt.figure(figsize=(12, 5))
