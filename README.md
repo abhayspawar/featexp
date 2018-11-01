@@ -11,6 +11,7 @@ get_univariate_plots(data=data_train, target_col='target', data_test=data_test, 
 # Draws plots for all columns if features_list not passed
 # Draws only train data plots if no test_data passed
 ```
+
 ![Output1](demo/sample_outputs/days_employed.png)
 featexp bins a feature into equal population bins and shows mean value of dependent variable (target) in each bin. Here's how to read these plots:
   1. Trend plot on left helps you understand the relationship between target and feature.
@@ -31,7 +32,9 @@ Returns a dataframe with trend changes and trend correlation which can be used f
 ![Output1](demo/sample_outputs/stats_output.png)
 
 
+
 Leakage detection: Helps with identifying why a feature is leaky which helps with debugging.
+
 ![Leaky feature](demo/sample_outputs/leaky_feature.png)
 Nulls have 0% mean target and 100% mean target in other bins. Implies this feature is populated only for target = 1.
 
