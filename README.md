@@ -31,6 +31,8 @@ Returns a dataframe with trend changes and trend correlation which can be used f
 ![Output1](demo/sample_outputs/stats_output.png)
 
 
-Leakage detection: Helps with identifying why a feature is leaky. Helps with debugging.
+Leakage detection: Helps with identifying why a feature is leaky which helps with debugging.
+![Leaky feature](demo/sample_outputs/leaky_feature.png)
+Nulls have 0% mean target and 100% mean target in other bins. Implies this feature is populated only for target = 1.
 
 Blog post on how to use featexp with elaborate exmaples: coming soon 
