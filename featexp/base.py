@@ -1,11 +1,6 @@
-import sys
 import pandas as pd
 import numpy as np
-import random
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import roc_auc_score
 from matplotlib import pyplot as plt
-
 
 def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
     """
