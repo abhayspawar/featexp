@@ -17,12 +17,15 @@ featexp bins a feature into equal population bins and shows mean value of depend
   2. Population distribution helps you make sure the feature is correct. 
   3. Also, shows number of trend direction changes and correlation between train and test trend which can be used to identify      noisy features. High number of trend changes or low trend correlation implies high noise.
 
+Example of noisy feature: Has low trend correlation
+![Noisy feature](demo/sample_outputs/noisy_feature.png)
+
 Getting trend changes and trend correlation for all features in a dataframe:
 ```
 from featexp import get_trend_stats_feature
 stats = get_trend_stats(data=data_train, target_col='target', data_test=data_test)
 
-# data_test is optional. If nothing is passed, trend correlations aren't calculated.
+# data_test is optional. If not passed, trend correlations aren't calculated.
 ```
 Returns a dataframe with trend changes and trend correlation which can be used for dropping the noisy features, etc.
 ![Output1](demo/sample_outputs/stats_output.png)
