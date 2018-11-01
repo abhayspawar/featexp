@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="featexp",
-    version="0.0.1",
+    version="0.0.22",
     author="Abhay Pawar",
     author_email="abhayspawar@gmail.com",
     description="Feature exploration for supervised learning",
@@ -19,7 +19,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=['pandas', 'numpy', 'matplotlib']
+    install_requires=['pandas==0.23.4', 'numpy==1.14.3', 'matplotlib==2.2.2']
 
 )
 
