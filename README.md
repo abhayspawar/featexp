@@ -6,7 +6,8 @@ featexp draws plots similar to partial dependence plots, but directly from data 
 ```code-block
     #Creates all partial dependence like plots for all deatures``
     sdf = 10
-    fd=200```
+    fd=200
+```
 
 Thats all!
 
