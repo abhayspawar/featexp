@@ -8,6 +8,7 @@ featexp draws plots similar to partial dependence plots, but directly from data 
     sdf = 10
     fd=200
 ```
+![Output1](demo/sample_outputs/days_employed.png)
 
 Thats all!
 
