@@ -83,7 +83,7 @@ def draw_plots(input_data, feature, target_col, trend_correlation=None):
     :param feature: feature column name
     :param target_col: target column
     :param trend_correlation: correlation between train and test trends of feature wrt target
-    :return:
+    :return: Draws trend plots for feature
     """
     trend_changes = get_trend_changes(grouped_data=input_data, feature=feature, target_col=target_col)
     plt.figure(figsize=(12, 5))
@@ -123,19 +123,19 @@ def get_trend_changes(grouped_data, feature, target_col, threshold=0.03):
     :param feature: feature column name
     :param target_col: target column
     :param threshold: minimum % difference required to count as trend change
-    :return:
+    :return: number of trend chagnes for the feature
     """
     grouped_data = grouped_data.loc[grouped_data[feature] != 'Nulls', :].reset_index(drop=True)
     target_diffs = grouped_data[target_col + '_mean'].diff()
     target_diffs = target_diffs[~np.isnan(target_diffs)].reset_index(drop=True)
     max_diff = grouped_data[target_col + '_mean'].max() - grouped_data[target_col + '_mean'].min()
-    target_diffs_mod = target_diffs.abs()
+    target_diffs_mod = target_diffs.fillna(0).abs()
     low_change = target_diffs_mod < threshold * max_diff
     target_diffs_norm = target_diffs.divide(target_diffs_mod)
     target_diffs_norm[low_change] = 0
     target_diffs_norm = target_diffs_norm[target_diffs_norm != 0]
     target_diffs_lvl2 = target_diffs_norm.diff()
-    changes = target_diffs_lvl2.abs() / 2
+    changes = target_diffs_lvl2.fillna(0).abs() / 2
     tot_trend_changes = int(changes.sum()) if ~np.isnan(changes.sum()) else 0
     return (tot_trend_changes)
 
@@ -147,7 +147,7 @@ def get_trend_correlation(grouped, grouped_test, feature, target_col):
     :param grouped_test: test grouped data
     :param feature: feature column name
     :param target_col: target column name
-    :return:
+    :return: trend correlation between train and test
     """
     grouped = grouped[grouped[feature] != 'Nulls'].reset_index(drop=True)
     grouped_test = grouped_test[grouped_test[feature] != 'Nulls'].reset_index(drop=True)
@@ -160,12 +160,13 @@ def get_trend_correlation(grouped, grouped_test, feature, target_col):
     nan_rows = pd.isnull(grouped_test_train[target_col + '_mean']) | pd.isnull(
         grouped_test_train[target_col + '_mean_test'])
     grouped_test_train = grouped_test_train.loc[~nan_rows, :]
-    trend_correlation = np.corrcoef(grouped_test_train[target_col + '_mean'],
-                                    grouped_test_train[target_col + '_mean_test'])[0, 1]
-
-    if np.isnan(trend_correlation):
+    if len(grouped_test_train) > 1:
+        trend_correlation = np.corrcoef(grouped_test_train[target_col + '_mean'],
+                                        grouped_test_train[target_col + '_mean_test'])[0, 1]
+    else:
         trend_correlation = 0
         print("Only one bin created for " + feature + ". Correlation can't be calculated")
+
     return (trend_correlation)
 
 
@@ -177,7 +178,7 @@ def univariate_plotter(feature, data, target_col, bins=10, data_test=0):
     :param target_col: target column name
     :param bins: number of bins to be created from continuous feature
     :param data_test: test data which has to be compared with input data for correlation
-    :return:
+    :return: grouped data if only train passed, else (grouped train data, grouped test data)
     """
     print(' {:^100} '.format('Plots for ' + feature))
     if data[feature].dtype == 'O':
@@ -214,7 +215,7 @@ def get_univariate_plots(data, target_col, features_list=0, bins=10, data_test=0
     :param features_list: by default creates plots for all features. If list passed, creates plots of only those features.
     :param bins: number of bins to be created from continuous feature
     :param data_test: test data which has to be compared with input data for correlation
-    :return:
+    :return: Draws univariate plots for all columns in data
     """
     if type(features_list) == int:
         features_list = list(data.columns)
@@ -227,7 +228,7 @@ def get_univariate_plots(data, target_col, features_list=0, bins=10, data_test=0
             univariate_plotter(feature=cols, data=data, target_col=target_col, bins=10, data_test=data_test)
 
 
-def get_trend_stats_feature(data, target_col, features_list=0, bins=10, data_test=0):
+def get_trend_stats(data, target_col, features_list=0, bins=10, data_test=0):
     """
     Calculates trend changes and correlation between train/test for list of features
     :param data: dataframe containing features and target columns
@@ -235,8 +236,9 @@ def get_trend_stats_feature(data, target_col, features_list=0, bins=10, data_tes
     :param features_list: by default creates plots for all features. If list passed, creates plots of only those features.
     :param bins: number of bins to be created from continuous feature
     :param data_test: test data which has to be compared with input data for correlation
-    :return:
+    :return: dataframe with trend changes and trend correlation (if test data passed)
     """
+
     if type(features_list) == int:
         features_list = list(data.columns)
         features_list.remove(target_col)
@@ -264,5 +266,6 @@ def get_trend_stats_feature(data, target_col, features_list=0, bins=10, data_tes
     stats_all_df.columns = ['Feature', 'Trend_changes'] if has_test == False else ['Feature', 'Trend_changes',
                                                                                    'Trend_changes_test',
                                                                                    'Trend_correlation']
-    print('Categorical features ' + str(ignored) + ' ignored. Categorical features not supported yet.')
+    if len(ignored) > 0:
+        print('Categorical features ' + str(ignored) + ' ignored. Categorical features not supported yet.')
     return (stats_all_df)
