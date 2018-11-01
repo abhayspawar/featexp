@@ -30,4 +30,7 @@ stats = get_trend_stats(data=data_train, target_col='target', data_test=data_tes
 Returns a dataframe with trend changes and trend correlation which can be used for dropping the noisy features, etc.
 ![Output1](demo/sample_outputs/stats_output.png)
 
+
+Leakage detection: Helps with identifying why a feature is leaky. Helps with debugging.
+
 Blog post on how to use featexp with elaborate exmaples: coming soon 
