@@ -4,6 +4,7 @@ Feature exploration for supervised learning. Helps with feature understanding, i
 ## Installation
 ```pip install featexp```
 
+## Using featexp
 featexp draws plots similar to partial dependence plots, but directly from data instead of using a trained model like current implementations of pdp do. Since, it draws plots from data directly, it helps with understanding the features well and building better ML models.
 
 ```
