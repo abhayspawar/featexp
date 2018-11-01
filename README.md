@@ -13,13 +13,18 @@ get_univariate_plots(data=data_train, target_col='target', data_test=data_test, 
 ```
 ![Output1](demo/sample_outputs/days_employed.png)
 featexp bins a feature into equal population bins and shows mean value of dependent variable (target) in each bin. Here's how to read these plots:
-  1. Trend plot on left helps you understand the relationship between target and feature and if it makes sense.
-  2. Population distribution helps you make sure the feature is correct. Featexp always calculates equal population bins.          Hence, very high population in a bin implies a special value of feature.
+  1. Trend plot on left helps you understand the relationship between target and feature.
+  2. Population distribution helps you make sure the feature is correct. 
+  3. Also, shows number of trend direction changes and correlation between train and test trend which can be used to identify      noisy features. High number of trend changes or low trend correlation implies high noise.
 
-Thats all!
+Getting trend changes and trend correlation for all features in a dataframe:
+```
+from featexp import get_trend_stats_feature
+stats = get_trend_stats(data=data_train, target_col='target', data_test=data_test)
 
+# data_test is optional. If nothing is passed, trend correlations aren't calculated.
+```
+Returns a dataframe with trend changes and trend correlation which can be used for dropping the noisy features, etc.
+![Output1](demo/sample_outputs/stats.png)
 
-
-
-
-sdf
+Blog post on how to use featexp with elaborate exmaples: comming soon 
