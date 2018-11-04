@@ -25,7 +25,8 @@ featexp bins a feature into equal population bins and shows mean value of depend
 Example of noisy feature: Has low trend correlation
 ![Noisy feature](demo/sample_outputs/noisy_feature.png)
 
-### Getting binned data with mean target and population in each bin
+### Getting binned feature stats
+Returns mean target and population in each bin of a feature
 ```
 from featexp import univariate_plotter()
 binned_data_train, binned_data_test = univariate_plotter(data=data_train, target_col='target', feature='DAYS_EMPLOYED', data_test=data_test)
@@ -33,7 +34,8 @@ binned_data_train, binned_data_test = univariate_plotter(data=data_train, target
 binned_data_train, binned_data_test = univariate_plotter(data=data_train, target_col='target', feature='DAYS_EMPLOYED')
 ```
 
-### Getting trend changes and trend correlation for all features in a dataframe:
+### Getting stats for all features:
+Returns trend changes and trend correlation for all features in a dataframe
 ```
 from featexp import get_trend_stats_feature
 stats = get_trend_stats(data=data_train, target_col='target', data_test=data_test)
