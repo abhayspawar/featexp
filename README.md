@@ -25,7 +25,15 @@ featexp bins a feature into equal population bins and shows mean value of depend
 Example of noisy feature: Has low trend correlation
 ![Noisy feature](demo/sample_outputs/noisy_feature.png)
 
-Getting trend changes and trend correlation for all features in a dataframe:
+### Getting binned data with mean target and population in each bin
+```
+from featexp import univariate_plotter()
+binned_data_train, binned_data_test = univariate_plotter(data=data_train, target_col='target', feature='DAYS_EMPLOYED', data_test=data_test)
+# For only train data
+binned_data_train, binned_data_test = univariate_plotter(data=data_train, target_col='target', feature='DAYS_EMPLOYED')
+```
+
+### Getting trend changes and trend correlation for all features in a dataframe:
 ```
 from featexp import get_trend_stats_feature
 stats = get_trend_stats(data=data_train, target_col='target', data_test=data_test)
@@ -35,9 +43,8 @@ stats = get_trend_stats(data=data_train, target_col='target', data_test=data_tes
 Returns a dataframe with trend changes and trend correlation which can be used for dropping the noisy features, etc.
 ![Output1](demo/sample_outputs/stats_output.png)
 
-
-
-Leakage detection: Helps with identifying why a feature is leaky which helps with debugging.
+###Leakage detection
+Helps with identifying why a feature is leaky which helps with debugging.
 
 ![Leaky feature](demo/sample_outputs/leaky_feature.png)
 Nulls have 0% mean target and 100% mean target in other bins. Implies this feature is populated only for target = 1.
