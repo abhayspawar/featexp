@@ -1,11 +1,8 @@
 *.xml
 *.csv
-*.xlsx
-*.ipynb
 .idea/*
-
 *.pyc
-
+demo/.ipynb_checkpoints/
 # pip installer build files
 /dist/
 /build/
