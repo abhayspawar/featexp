@@ -28,10 +28,10 @@ Example of noisy feature: Has low trend correlation
 ### Getting binned feature stats
 Returns mean target and population in each bin of a feature
 ```
-from featexp import univariate_plotter()
+from featexp import univariate_plotter
 binned_data_train, binned_data_test = univariate_plotter(data=data_train, target_col='target', feature='DAYS_EMPLOYED', data_test=data_test)
 # For only train data
-binned_data_train, binned_data_test = univariate_plotter(data=data_train, target_col='target', feature='DAYS_EMPLOYED')
+binned_data_train = univariate_plotter(data=data_train, target_col='target', feature='DAYS_EMPLOYED')
 ```
 
 ### Getting stats for all features:
@@ -45,7 +45,7 @@ stats = get_trend_stats(data=data_train, target_col='target', data_test=data_tes
 Returns a dataframe with trend changes and trend correlation which can be used for dropping the noisy features, etc.
 ![Output1](demo/sample_outputs/stats_output.png)
 
-###Leakage detection
+### Leakage detection
 Helps with identifying why a feature is leaky which helps with debugging.
 
 ![Leaky feature](demo/sample_outputs/leaky_feature.png)
