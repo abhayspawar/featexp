@@ -5,6 +5,8 @@ Feature exploration for supervised learning. Helps with feature understanding, i
 ```pip install featexp```
 
 ### Using featexp
+Detailed [Medium post](https://towardsdatascience.com/my-secret-sauce-to-be-in-top-2-of-a-kaggle-competition-57cff0677d3c) on using featexp.
+
 featexp draws plots similar to partial dependence plots, but directly from data instead of using a trained model like current implementations of pdp do. Since, it draws plots from data directly, it helps with understanding the features well and building better ML models.
 
 ```
@@ -50,5 +52,3 @@ Helps with identifying why a feature is leaky which helps with debugging.
 
 ![Leaky feature](demo/sample_outputs/leaky_feature.png)
 Nulls have 0% mean target and 100% mean target in other bins. Implies this feature is populated only for target = 1.
-
-[Medium post](https://towardsdatascience.com/my-secret-sauce-to-be-in-top-2-of-a-kaggle-competition-57cff0677d3c) on using featexp.
