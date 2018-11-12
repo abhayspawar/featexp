@@ -15,4 +15,4 @@ demo/.ipynb_checkpoints/
 .idea
 .vscode
 # Jupyter
-notebooks/.ipynb_checkpoints/*
+.ipynb_checkpoints
