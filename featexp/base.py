@@ -220,7 +220,7 @@ def get_univariate_plots(data, target_col, features_list=0, bins=10, data_test=0
         if cols != target_col and data[cols].dtype == 'O':
             print(cols + ' is categorical. Categorical features not supported yet.')
         elif cols != target_col and data[cols].dtype != 'O':
-            univariate_plotter(feature=cols, data=data, target_col=target_col, bins=10, data_test=data_test)
+            univariate_plotter(feature=cols, data=data, target_col=target_col, bins=bins, data_test=data_test)
 
 
 def get_trend_stats(data, target_col, features_list=0, bins=10, data_test=0):
@@ -263,4 +263,6 @@ def get_trend_stats(data, target_col, features_list=0, bins=10, data_test=0):
                                                                                    'Trend_correlation']
     if len(ignored) > 0:
         print('Categorical features ' + str(ignored) + ' ignored. Categorical features not supported yet.')
+
+    print('Returning stats for all numeric features')
     return (stats_all_df)
