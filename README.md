@@ -5,6 +5,8 @@ Feature exploration for supervised learning. Helps with feature understanding, i
 ```pip install featexp```
 
 ### Using featexp
+Detailed [Medium post](https://towardsdatascience.com/my-secret-sauce-to-be-in-top-2-of-a-kaggle-competition-57cff0677d3c) on using featexp.
+
 featexp draws plots similar to partial dependence plots, but directly from data instead of using a trained model like current implementations of pdp do. Since, it draws plots from data directly, it helps with understanding the features well and building better ML models.
 
 ```
@@ -25,7 +27,17 @@ featexp bins a feature into equal population bins and shows mean value of depend
 Example of noisy feature: Has low trend correlation
 ![Noisy feature](demo/sample_outputs/noisy_feature.png)
 
-Getting trend changes and trend correlation for all features in a dataframe:
+### Getting binned feature stats
+Returns mean target and population in each bin of a feature
+```
+from featexp import univariate_plotter
+binned_data_train, binned_data_test = univariate_plotter(data=data_train, target_col='target', feature='DAYS_EMPLOYED', data_test=data_test)
+# For only train data
+binned_data_train = univariate_plotter(data=data_train, target_col='target', feature='DAYS_EMPLOYED')
+```
+
+### Getting stats for all features:
+Returns trend changes and trend correlation for all features in a dataframe
 ```
 from featexp import get_trend_stats_feature
 stats = get_trend_stats(data=data_train, target_col='target', data_test=data_test)
@@ -35,11 +47,8 @@ stats = get_trend_stats(data=data_train, target_col='target', data_test=data_tes
 Returns a dataframe with trend changes and trend correlation which can be used for dropping the noisy features, etc.
 ![Output1](demo/sample_outputs/stats_output.png)
 
-
-
-Leakage detection: Helps with identifying why a feature is leaky which helps with debugging.
+### Leakage detection
+Helps with identifying why a feature is leaky which helps with debugging.
 
 ![Leaky feature](demo/sample_outputs/leaky_feature.png)
 Nulls have 0% mean target and 100% mean target in other bins. Implies this feature is populated only for target = 1.
-
-Blog post on how to use featexp with elaborate exmaples: coming soon 

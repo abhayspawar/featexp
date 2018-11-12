@@ -264,5 +264,4 @@ def get_trend_stats(data, target_col, features_list=0, bins=10, data_test=0):
     if len(ignored) > 0:
         print('Categorical features ' + str(ignored) + ' ignored. Categorical features not supported yet.')
 
-    print('Returning stats for all numeric features')
     return (stats_all_df)
