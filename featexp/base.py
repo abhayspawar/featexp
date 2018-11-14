@@ -27,7 +27,7 @@ def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
         reduced_cuts = 0
         for i in range(1, bins + 1):
             next_cut = np.percentile(input_data[feature], i * 100 / bins)
-            if next_cut != prev_cut:
+            if next_cut > prev_cut + .000001:  # float numbers shold be compared with some threshold!
                 cuts.append(next_cut)
             else:
                 reduced_cuts = reduced_cuts + 1
