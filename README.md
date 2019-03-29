@@ -4,7 +4,7 @@ Feature exploration for supervised learning. Helps with feature understanding, i
 ### Installation
 ```pip install featexp```
 
-### To cite featexp
+### Citing featexp
 ![s](https://zenodo.org/badge/doi/10.5281/zenodo.2616757.svg)
 
 ### Using featexp
