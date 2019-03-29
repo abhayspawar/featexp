@@ -5,7 +5,7 @@ Feature exploration for supervised learning. Helps with feature understanding, i
 ```pip install featexp```
 
 ### To cite featexp
-https://zenodo.org/badge/doi/10.5281/zenodo.2616757.svg
+![s]https://zenodo.org/badge/doi/10.5281/zenodo.2616757.svg
 
 ### Using featexp
 Detailed [Medium post](https://towardsdatascience.com/my-secret-sauce-to-be-in-top-2-of-a-kaggle-competition-57cff0677d3c) on using featexp.
