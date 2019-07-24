@@ -4,9 +4,6 @@ Feature exploration for supervised learning. Helps with feature understanding, i
 ### Installation
 ```pip install featexp```
 
-### Citing featexp
-![s](https://zenodo.org/badge/doi/10.5281/zenodo.2616757.svg)
-
 ### Using featexp
 Detailed [Medium post](https://towardsdatascience.com/my-secret-sauce-to-be-in-top-2-of-a-kaggle-competition-57cff0677d3c) on using featexp.
 
@@ -55,3 +52,7 @@ Helps with identifying why a feature is leaky which helps with debugging.
 
 ![Leaky feature](demo/sample_outputs/leaky_feature.png)
 Nulls have 0% mean target and 100% mean target in other bins. Implies this feature is populated only for target = 1.
+
+### Citing featexp
+![s](https://zenodo.org/badge/doi/10.5281/zenodo.2616757.svg)
+
