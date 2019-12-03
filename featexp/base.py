@@ -4,7 +4,8 @@ from matplotlib import pyplot as plt
 
 
 def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
-    """Bins continuous features into equal sample size buckets and 
+    """
+    Bins continuous features into equal sample size buckets and 
     returns the target mean in each bucket. Separates out nulls into 
     another bucket.
     
@@ -93,7 +94,8 @@ def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
 
 
 def draw_plots(input_data, feature, target_col, trend_correlation=None):
-    """Draws univariate dependence plots for a feature.
+    """
+    Draws univariate dependence plots for a feature.
     
     :param input_data: grouped data contained bins of feature and 
     target mean.
@@ -154,8 +156,9 @@ def draw_plots(input_data, feature, target_col, trend_correlation=None):
 
 
 def get_trend_changes(grouped_data, feature, target_col, threshold=0.03):
-    """Calculates number of times the trend of feature wrt target 
-    changed direction.
+    """
+    Calculates number of times the trend of feature wrt target changed
+    direction.
     
     :param grouped_data: grouped dataset.
     :param feature: feature column name.
@@ -186,7 +189,8 @@ def get_trend_changes(grouped_data, feature, target_col, threshold=0.03):
 
 
 def get_trend_correlation(grouped, grouped_test, feature, target_col):
-    """Calculates correlation between train and test trend of feature 
+    """
+    Calculates correlation between train and test trend of feature 
     wrt target.
     
     :param grouped: train grouped data.
@@ -233,7 +237,8 @@ def get_trend_correlation(grouped, grouped_test, feature, target_col):
 
 
 def univariate_plotter(feature, data, target_col, bins=10, data_test=0):
-    """Calls the draw plot function and editing around the plots.
+    """
+    Calls the draw plot function and editing around the plots.
     
     :param feature: feature column name.
     :param data: dataframe containing features and target columns.
@@ -327,7 +332,8 @@ def get_univariate_plots(
 
 
 def get_trend_stats(data, target_col, features_list=0, bins=10, data_test=0):
-    """Calculates trend changes and correlation between train/test for 
+    """
+    Calculates trend changes and correlation between train/test for 
     list of features.
     
     :param data: dataframe containing features and target columns.
