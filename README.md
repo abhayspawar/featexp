@@ -44,7 +44,7 @@ binned_data_train = univariate_plotter(data=data_train, target_col='target', fea
 
 Returns trend changes and trend correlation for all features in a dataframe
 ```
-from featexp import get_trend_stats_feature
+from featexp import get_trend_stats
 stats = get_trend_stats(data=data_train, target_col='target', data_test=data_test)
 
 # data_test is optional. If not passed, trend correlations aren't calculated.
