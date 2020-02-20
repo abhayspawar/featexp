@@ -1,0 +1,12 @@
+# Requirements.
+matplotlib==3.0.2
+numpy==1.17.4
+pandas==0.25.3
+
+# Notebook.
+scikit-learn>=0.22.1
+xgboost>=1.0.0
+
+# Venv in notebook.
+ipykernel>=5.1.3
+virtualenvwrapper>=4.8.4

@@ -7,11 +7,11 @@ Feature exploration for supervised learning. Helps with feature understanding, i
 
 ## Using featexp
 
-Detailed [Medium post](https://towardsdatascience.com/my-secret-sauce-to-be-in-top-2-of-a-kaggle-competition-57cff0677d3c) on using featexp. Translations from web: [Chinese](https://www.jiqizhixin.com/articles/2018-11-06-7), [Russian](https://neurohive.io/ru/tutorial/kak-popast-v-top-2-sorevnovanija-kaggle/)
+Detailed [Medium post](https://towardsdatascience.com/my-secret-sauce-to-be-in-top-2-of-a-kaggle-competition-57cff0677d3c) on using featexp.
 
 featexp draws plots similar to partial dependence plots, but directly from data instead of using a trained model like current implementations of pdp do. Since it draws plots from data directly, it helps with understanding the features well and building better ML models.
 
-```
+```bash
 from featexp import get_univariate_plots
 get_univariate_plots(data=data_train, target_col='target', data_test=data_test, features_list=['DAYS_EMPLOYED'])
 
@@ -23,8 +23,8 @@ get_univariate_plots(data=data_train, target_col='target', data_test=data_test, 
 ![Output1](demo/sample_outputs/days_employed.png)
 featexp bins a feature into equal population bins and shows the mean value of the dependent variable (target) in each bin. Here's how to read these plots:
 
-  1. The trend plot on left helps you understand the relationship between target and feature.
-  2. Population distribution helps you make sure the feature is correct. 
+  1. The trend plot on the left helps you understand the relationship between target and feature.
+  2. Population distribution helps you make sure the feature is correct.
   3. Also, shows the number of trend direction changes and the correlation between train and test trend which can be used to identify noisy features. A high number of trend changes or low trend correlation implies high noise.
 
 Example of a noisy feature: Has low trend correlation
@@ -33,7 +33,8 @@ Example of a noisy feature: Has low trend correlation
 ### Getting binned feature stats
 
 Returns mean target and population in each bin of a feature
-```
+
+```bash
 from featexp import univariate_plotter
 binned_data_train, binned_data_test = univariate_plotter(data=data_train, target_col='target', feature='DAYS_EMPLOYED', data_test=data_test)
 # For only train data
@@ -43,12 +44,14 @@ binned_data_train = univariate_plotter(data=data_train, target_col='target', fea
 ### Getting stats for all features
 
 Returns trend changes and trend correlation for all features in a dataframe
-```
-from featexp import get_trend_stats
+
+```bash
+from featexp import get_trend_stats_feature
 stats = get_trend_stats(data=data_train, target_col='target', data_test=data_test)
 
 # data_test is optional. If not passed, trend correlations aren't calculated.
 ```
+
 Returns a dataframe with trend changes and trend correlation which can be used for dropping the noisy features, etc.
 ![Output1](demo/sample_outputs/stats_output.png)
 
