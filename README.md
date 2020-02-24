@@ -1,5 +1,5 @@
 # featexp
-Feature exploration for supervised learning. Helps with feature understanding, identifying noisy features, feature debugging, leakage detection and model monitoring.
+Feature exploration for supervised learning. Helps with feature understanding, identifying noisy features, feature debugging, leakage detection and model monitoring. Translations from web: [Chinese](https://www.jiqizhixin.com/articles/2018-11-06-7), [Russian](https://neurohive.io/ru/tutorial/kak-popast-v-top-2-sorevnovanija-kaggle/)
 
 ## Installation
 
