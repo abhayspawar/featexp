@@ -1,5 +1,5 @@
 # featexp
-Feature exploration for supervised learning. Helps with feature understanding, identifying noisy features, feature debugging, leakage detection and model monitoring. Translations from web: [Chinese](https://www.jiqizhixin.com/articles/2018-11-06-7), [Russian](https://neurohive.io/ru/tutorial/kak-popast-v-top-2-sorevnovanija-kaggle/)
+Feature exploration for supervised learning. Helps with feature understanding, identifying noisy features, feature debugging, leakage detection and model monitoring.
 
 ## Installation
 
@@ -7,7 +7,7 @@ Feature exploration for supervised learning. Helps with feature understanding, i
 
 ## Using featexp
 
-Detailed [Medium post](https://towardsdatascience.com/my-secret-sauce-to-be-in-top-2-of-a-kaggle-competition-57cff0677d3c) on using featexp.
+Detailed [Medium post](https://towardsdatascience.com/my-secret-sauce-to-be-in-top-2-of-a-kaggle-competition-57cff0677d3c) on using featexp. Translations from web: [Chinese](https://www.jiqizhixin.com/articles/2018-11-06-7), [Russian](https://neurohive.io/ru/tutorial/kak-popast-v-top-2-sorevnovanija-kaggle/)
 
 featexp draws plots similar to partial dependence plots, but directly from data instead of using a trained model like current implementations of pdp do. Since it draws plots from data directly, it helps with understanding the features well and building better ML models.
 
