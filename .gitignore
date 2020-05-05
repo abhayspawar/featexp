@@ -3,6 +3,7 @@
 .idea/*
 *.pyc
 demo/.ipynb_checkpoints/
+.venv
 
 # pip installer build files
 /dist/

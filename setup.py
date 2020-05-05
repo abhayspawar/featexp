@@ -9,7 +9,11 @@ setuptools.setup(
     author="Abhay Pawar",
     author_email="abhayspawar@gmail.com",
     description="Feature exploration for supervised learning",
-    long_description="Featexp helps with feature understanding, feature debugging, leakage detection, finding noisy features and model monitoring",
+    long_description=(
+        "Featexp helps with feature understanding, "
+        "feature debugging, leakage detection, finding "
+        "noisy features and model monitoring"
+    ),
     long_description_content_type="text/markdown",
     url="https://github.com/abhayspawar/featexp",
     packages=setuptools.find_packages(),

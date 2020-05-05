@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+
 from matplotlib import pyplot as plt
 
 
@@ -18,7 +19,7 @@ def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
     :return: If cuts are passed only grouped data is returned, else cuts 
     and grouped data is returned.
     """
-    
+
     has_null = pd.isnull(input_data[feature]).sum() > 0
     if has_null == 1:
         data_null = input_data[pd.isnull(input_data[feature])]
@@ -42,7 +43,9 @@ def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
             prev_cut = next_cut
 
         # if reduced_cuts>0:
-        #     print('Reduced the number of bins due to less variation in feature')
+            # print(
+            # 'Reduced the number of bins due to less variation in feature'
+            # )
         cut_series = pd.cut(input_data[feature], cuts)
     else:
         cut_series = pd.cut(input_data[feature], cuts)
@@ -105,7 +108,7 @@ def draw_plots(input_data, feature, target_col, trend_correlation=None):
     of feature wrt target.
     :return: Draws trend plots for feature.
     """
-    
+
     trend_changes = get_trend_changes(
         grouped_data=input_data, feature=feature, target_col=target_col
     )
@@ -167,7 +170,7 @@ def get_trend_changes(grouped_data, feature, target_col, threshold=0.03):
     change.
     :return: number of trend chagnes for the feature.
     """
-    
+
     grouped_data = grouped_data.loc[
         grouped_data[feature] != "Nulls", :
     ].reset_index(drop=True)
@@ -199,7 +202,7 @@ def get_trend_correlation(grouped, grouped_test, feature, target_col):
     :param target_col: target column name.
     :return: trend correlation between train and test.
     """
-    
+
     grouped = grouped[grouped[feature] != "Nulls"].reset_index(drop=True)
     grouped_test = grouped_test[grouped_test[feature] != "Nulls"].reset_index(
         drop=True
@@ -249,7 +252,7 @@ def univariate_plotter(feature, data, target_col, bins=10, data_test=0):
     :return: grouped data if only train passed, else (grouped train 
     data, grouped test data).
     """
-    
+
     print(" {:^100} ".format("Plots for " + feature))
     if data[feature].dtype == "O":
         print("Categorical feature not supported")
