@@ -1,7 +1,7 @@
 # Requirements.
-matplotlib==3.0.2
-numpy==1.17.4
-pandas==0.25.3
+matplotlib
+numpy
+pandas
 
 # Notebook.
 scikit-learn>=0.22.1
