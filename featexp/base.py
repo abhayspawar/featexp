@@ -47,6 +47,7 @@ def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
             # print(
             # 'Reduced the number of bins due to less variation in feature'
             # )
+        
         cut_series = pd.cut(input_data[feature], cuts)
     else:
         cut_series = pd.cut(input_data[feature], cuts)
@@ -66,7 +67,7 @@ def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
     grouped = grouped.reset_index(drop=True)
     corrected_bin_name = (
         "["
-        + str(min(input_data[feature]))
+        + str(round(min(input_data[feature]), 5))
         + ", "
         + str(grouped.loc[0, feature]).split(",")[1]
     )
