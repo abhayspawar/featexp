@@ -153,6 +153,11 @@ def draw_plots(input_data, feature, target_col, trend_correlation=None):
     plt.xticks(rotation=45)
     ax2.set_xlabel("Bins of " + feature)
     ax2.set_ylabel("Bin-wise sample size")
+    ax1.yaxis.set_major_formatter(FormatStrFormatter('%.4f'))
+    ax1.xaxis.set_major_formatter(FormatStrFormatter('%.4f'))
+    ax2.yaxis.set_major_formatter(FormatStrFormatter('%.4f'))
+    ax2.xaxis.set_major_formatter(FormatStrFormatter('%.4f'))
+
     plt.title("Samples in bins of " + feature)
     plt.tight_layout()
     plt.show()
