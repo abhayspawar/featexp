@@ -4,6 +4,7 @@
 *.pyc
 demo/.ipynb_checkpoints/
 .venv
+*.DS_Store
 
 # pip installer build files
 /dist/
